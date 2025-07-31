@@ -1,4 +1,4 @@
-package com.igflife.model.response;
+package com.igflife.model.dto.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

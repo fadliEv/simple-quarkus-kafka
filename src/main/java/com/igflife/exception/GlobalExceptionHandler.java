@@ -3,7 +3,7 @@ package com.igflife.exception;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import com.igflife.model.response.ApiResponse;
+import com.igflife.model.dto.common.ApiResponse;
 
 @Provider
 public class GlobalExceptionHandler implements ExceptionMapper<Exception> {

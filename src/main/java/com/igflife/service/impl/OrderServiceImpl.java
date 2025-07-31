@@ -1,13 +1,16 @@
 package com.igflife.service.impl;
 
-import com.igflife.exception.OrderNotFoundException;
-import com.igflife.model.dto.OrderDto;
+
+import com.igflife.model.dto.common.PagedResponse;
+import com.igflife.model.dto.request.OrderCreateRequest;
+import com.igflife.model.dto.response.OrderResponse;
 import com.igflife.model.entity.Order;
 import com.igflife.repository.OrderRepository;
 import com.igflife.service.OrderService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,43 +20,47 @@ public class OrderServiceImpl implements OrderService {
     @Inject
     OrderRepository orderRepository;
 
-
     @Override
-    public OrderDto createOrder(OrderDto orderDto) {
-        Order orderResult = new Order(
-                orderDto.getOrderId(),
-                orderDto.getCustomerId(),
-                orderDto.getOrderDate(),
-                orderDto.getTotalAmount(),
-                orderDto.getStatus()
-        );
-        orderRepository.save(orderResult);
-        return orderDto;
+    public OrderResponse createOrder(OrderCreateRequest request) {
+        Order order = new Order();
+        order.setCustomerId(request.getCustomerId());
+        order.setTotalAmount(request.getTotalAmount());
+        order.setStatus(request.getStatus());
+
+        String orderId = orderRepository.create(order);
+        return convertToResponse(orderId, order);
     }
 
     @Override
-    public List<OrderDto> getAllOrders() {
-        return orderRepository.findAll().stream()
-                .map(this::convertToDTO)
+    public OrderResponse getOrderById(String orderId) {
+        return null;
+    }
+
+    private OrderResponse convertToResponse(String orderId, Order order) {
+        OrderResponse response = new OrderResponse();
+        response.setOrderId(orderId);
+        response.setCustomerId(order.getCustomerId());
+        response.setOrderDate(LocalDateTime.now()); // Or fetch from DB
+        response.setTotalAmount(order.getTotalAmount());
+        response.setStatus(order.getStatus());
+        return response;
+    }
+
+    @Override
+    public PagedResponse<OrderResponse> getOrders(int page, int size) {
+        List<Order> orders = orderRepository.findAll(page, size);
+        int totalItems = orderRepository.countAll();
+
+        List<OrderResponse> content = orders.stream()
+                .map(order -> convertToResponse(order.getOrderId(), order))
                 .collect(Collectors.toList());
-    }
 
-    @Override
-    public OrderDto getOrderById(String orderId) {
-        Order order = orderRepository.findById(orderId);
-        if (order == null) {
-            throw new OrderNotFoundException(orderId);
-        }
-        return convertToDTO(order);
-    }
-
-    private OrderDto convertToDTO(Order order) {
-        return new OrderDto(
-                order.getOrderId(),
-                order.getCustomerId(),
-                order.getOrderDate(),
-                order.getTotalAmount(),
-                order.getStatus()
+        return new PagedResponse<>(
+                content,
+                page,
+                size,
+                totalItems,
+                (int) Math.ceil((double) totalItems / size)
         );
     }
 }
