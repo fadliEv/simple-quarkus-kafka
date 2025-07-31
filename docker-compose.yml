@@ -19,13 +19,48 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
-      KAFKA_CREATE_TOPICS: "test-topic:1:1"
+      KAFKA_CREATE_TOPICS: "order-events:3:1,external-order-events:3:1,order-processing:3:1"
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_LOG_SEGMENT_BYTES: 1073741824
+      KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 300000
     ports:
       - "9092:9092"
     depends_on:
       - zookeeper
     networks:
       - kafka-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password-baru
+      MYSQL_DATABASE: quarkus-kafka
+      MYSQL_USER: quarkus
+      MYSQL_PASSWORD: quarkus
+    ports:
+      - "3307:3306"
+    networks:
+      - kafka-network
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+    ports:
+      - "8081:8080"
+    depends_on:
+      - kafka
+    networks:
+      - kafka-network
+
+volumes:
+  mysql_data:
 
 networks:
   kafka-network:

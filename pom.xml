@@ -49,9 +49,15 @@
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- JSON Processing - Use consistent version -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jackson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-jsonb</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -63,14 +69,21 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-mysql</artifactId>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.38</version>
+            <scope>provided</scope>
         </dependency>
 
+        <!-- Kafka - Use platform version for consistency -->
+        <!-- https://mvnrepository.com/artifact/io.quarkus/quarkus-smallrye-reactive-messaging-kafka -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
+            <version>3.15.6</version> <!-- Gunakan versi yang sesuai dengan versi Quarkus Anda -->
+        </dependency>
     </dependencies>
 
     <build>

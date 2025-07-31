@@ -15,6 +15,4 @@ public class PagedResponse<T> {
     private int size;
     private long totalElements;
     private int totalPages;
-
-
 }
