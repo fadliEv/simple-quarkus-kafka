@@ -1,6 +1,5 @@
 package com.igflife.controller;
 
-import com.igflife.model.dto.OrderDto;
 import com.igflife.model.dto.common.ApiResponse;
 import com.igflife.model.dto.common.PagedResponse;
 import com.igflife.model.dto.request.OrderCreateRequest;
@@ -31,7 +30,7 @@ public class OrderController {
 
     @GET
     public Response getOrders(
-            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("page") @DefaultValue("1") int page,
             @QueryParam("size") @DefaultValue("10") int size) {
 
         PagedResponse<OrderResponse> response = orderService.getOrders(page, size);

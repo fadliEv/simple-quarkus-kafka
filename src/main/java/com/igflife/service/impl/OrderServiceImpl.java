@@ -28,14 +28,14 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(request.getStatus());
 
         String orderId = orderRepository.create(order);
-        return convertToResponse(orderId, order);
+        return convertToResponse(order);
     }
 
-    private OrderResponse convertToResponse(String orderId, Order order) {
+    private OrderResponse convertToResponse(Order order) {
         OrderResponse response = new OrderResponse();
-        response.setOrderId(orderId);
+        response.setOrderId(order.getOrderId());
         response.setCustomerId(order.getCustomerId());
-        response.setOrderDate(LocalDateTime.now()); // Or fetch from DB
+        response.setOrderDate(order.getOrderDate());
         response.setTotalAmount(order.getTotalAmount());
         response.setStatus(order.getStatus());
         return response;
@@ -43,11 +43,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public PagedResponse<OrderResponse> getOrders(int page, int size) {
+        // Validate page number (must be ≥ 1)
+        if (page < 1) {
+            throw new IllegalArgumentException("Page must be greater than or equal to 1");
+        }
+
         List<Order> orders = orderRepository.findAll(page, size);
         int totalItems = orderRepository.countAll();
 
         List<OrderResponse> content = orders.stream()
-                .map(order -> convertToResponse(order.getOrderId(), order))
+                .map(this::convertToResponse)
                 .collect(Collectors.toList());
 
         return new PagedResponse<>(
