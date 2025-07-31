@@ -95,7 +95,7 @@ simple-kafka-quarkus/
 
 ### 1. Clone Repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/fadliEv/simple-quarkus-kafka.git
 cd simple-kafka-quarkus
 ```
 
