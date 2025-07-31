@@ -20,6 +20,4 @@ public class OrderResponse {
 
     private BigDecimal totalAmount;
     private String status;
-
-    // Getters/setters + constructor if needed
 }

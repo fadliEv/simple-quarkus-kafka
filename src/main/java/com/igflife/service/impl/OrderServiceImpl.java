@@ -31,11 +31,6 @@ public class OrderServiceImpl implements OrderService {
         return convertToResponse(orderId, order);
     }
 
-    @Override
-    public OrderResponse getOrderById(String orderId) {
-        return null;
-    }
-
     private OrderResponse convertToResponse(String orderId, Order order) {
         OrderResponse response = new OrderResponse();
         response.setOrderId(orderId);

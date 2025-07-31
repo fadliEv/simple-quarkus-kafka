@@ -9,7 +9,6 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -43,27 +42,6 @@ public class OrderRepositoryImpl implements OrderRepository {
 
         } catch (SQLException e) {
             throw new RuntimeException("Failed to create order: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public Optional<Order> findById(String orderId) {
-        String sql = "SELECT * FROM orders WHERE order_id = ?";
-
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, orderId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(mapToOrder(rs));
-                }
-                return Optional.empty();
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to find order by ID: " + e.getMessage(), e);
         }
     }
 
@@ -109,23 +87,6 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
     }
 
-    @Override
-    public Boolean updateStatus(String orderId, String newStatus) {
-        String sql = "UPDATE orders SET status = ? WHERE order_id = ?";
-
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, newStatus);
-            ps.setString(2, orderId);
-
-            int affectedRows = ps.executeUpdate();
-            return affectedRows > 0;
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to update order status: " + e.getMessage(), e);
-        }
-    }
 
     // Helper method to map ResultSet to Order entity
     private Order mapToOrder(ResultSet rs) throws SQLException {
