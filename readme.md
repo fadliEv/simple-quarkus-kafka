@@ -607,18 +607,11 @@ quarkus.log.category."com.igflife".level=INFO
 ## 👥 Team & Contacts
 
 ### Development Team
-- **Lead Developer**: [Your Name]
-- **Architecture Review**: [Reviewer Name]
-- **DevOps Support**: [DevOps Name]
-
-### Support & Documentation
-- **Project Repository**: [Repository URL]
-- **Issue Tracking**: [Issue Tracker URL]
-- **Documentation**: [Documentation URL]
+- **Developer**: M Fadli Rahman Fauzan
 
 ## 📄 License & Compliance
 
-This project is developed for [Company Name] and follows enterprise development standards and security protocols.
+This project is developed for module learning purpose
 
 ---
 
@@ -639,6 +632,4 @@ This project is developed for [Company Name] and follows enterprise development 
 - **Observability**: Comprehensive logging and monitoring capabilities
 
 ---
-
-**Project Status**: ✅ **PRODUCTION READY** for development and testing environments  
 **Next Phase**: Security hardening and production deployment preparation
