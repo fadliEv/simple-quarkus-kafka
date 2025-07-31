@@ -26,11 +26,12 @@ public class OrderServiceImpl implements OrderService {
         order.setCustomerId(request.getCustomerId());
         order.setTotalAmount(request.getTotalAmount());
         order.setStatus(request.getStatus());
-
+        order.setOrderDate(LocalDateTime.now()); // Set current timestamp
         String orderId = orderRepository.create(order);
+        order.setOrderId(orderId);
+
         return convertToResponse(order);
     }
-
     private OrderResponse convertToResponse(Order order) {
         OrderResponse response = new OrderResponse();
         response.setOrderId(order.getOrderId());
